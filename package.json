@@ -8,8 +8,7 @@
     "build": "tsc src/index.ts",
     "prepublishOnly": "npm run build",
     "prepare": "husky install",
-    "test": "pwd",
-    "pre-commit": "npm test"
+    "test": "pwd"
   },
   "devDependencies": {
     "@babel/core": "7.15.8",
