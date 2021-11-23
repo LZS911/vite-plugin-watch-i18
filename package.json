@@ -9,8 +9,8 @@
     "prepublishOnly": "npm run build",
     "prepare": "husky install",
     "test": "pwd",
-    "pre-push": "npm publish",
-    "pre-commit": "npm test"
+    "prepush": "npm publish",
+    "precommit": "npm test"
   },
   "devDependencies": {
     "@babel/core": "7.15.8",
