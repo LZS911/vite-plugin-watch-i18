@@ -1,16 +1,12 @@
 {
   "name": "vite-plugin-watch-i18",
-  "version": "1.0.17",
+  "version": "1.0.16",
   "license": "MIT",
   "main": "src/index.js",
   "types": "src/index.d.ts",
   "scripts": {
     "build": "tsc src/index.ts",
-    "prepublishOnly": "npm run build",
-    "prepare": "husky install",
-    "test": "pwd",
-    "prepush": "npm publish",
-    "precommit": "npm test"
+    "prepublishOnly": "npm run build"
   },
   "devDependencies": {
     "@babel/core": "7.15.8",
