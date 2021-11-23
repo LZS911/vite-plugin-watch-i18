@@ -22,7 +22,7 @@ function vitePluginWatchI18(userOptions: Options = {}): Plugin {
 
       const filePath = ctx.file;
       const allFile = await fg(include);
-      if (!allFile.includes(filePath)) {
+      if (!allFile.some((i) => path.resolve(i) === filePath)) {
         return;
       }
 
