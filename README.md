@@ -27,12 +27,12 @@ export default defineConfig({
 
 ## Add
 
-![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/example/add.gif)
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/add.gif)
 
 ## Modify
 
-![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/example/modify.gif)
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/modify.gif)
 
 ## New Locale
 
-![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/example/new.gif)
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/new.gif)
