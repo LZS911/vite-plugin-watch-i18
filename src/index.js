@@ -82,7 +82,7 @@ function vitePluginWatchI18(userOptions) {
                             return [4 /*yield*/, fg(include)];
                         case 2:
                             allFile = _g.sent();
-                            if (!allFile.some(function (i) { return path.resolve(i) === filePath; })) {
+                            if (!allFile.includes(filePath)) {
                                 return [2 /*return*/];
                             }
                             pkg = require(path.resolve('package.json'));
