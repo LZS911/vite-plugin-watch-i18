@@ -24,3 +24,19 @@ export default defineConfig({
 | include | ['src/\*\*/\*.{js,jsx,ts,tsx}', '!src/\*\*/\*.d.ts'] | string[] | include directory |
 
 # Example
+
+## Add
+
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/add.gif)
+
+## Modify
+
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/modify.gif)
+
+## New Locale
+
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/new.gif)
+
+## Param
+
+![example](https://raw.githubusercontent.com/LZS911/vite-plugin-watch-i18/main/src/example/param.gif)
