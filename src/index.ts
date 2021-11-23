@@ -156,7 +156,7 @@ const writeLocale = ({
     let code;
     const isExistLocalFile = existsSync(localPath);
     if (isExistLocalFile) {
-      code = readFileSync(localPath, 'utf-8');
+      code = readFileSync(localPath, 'utf-8') || `export default {}`;
     } else {
       code = `export default {}`;
     }

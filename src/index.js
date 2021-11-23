@@ -184,7 +184,7 @@ var writeLocale = function (_a) {
         var code;
         var isExistLocalFile = (0, fs_1.existsSync)(localPath);
         if (isExistLocalFile) {
-            code = (0, fs_1.readFileSync)(localPath, 'utf-8');
+            code = (0, fs_1.readFileSync)(localPath, 'utf-8') || "export default {}";
         }
         else {
             code = "export default {}";
