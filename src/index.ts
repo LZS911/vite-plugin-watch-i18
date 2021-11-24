@@ -26,11 +26,7 @@ function vitePluginWatchI18(userOptions: Options = {}): Plugin {
         return;
       }
 
-      const pkg = require(path.resolve('package.json'));
-      const isTs = Object.keys({
-        ...(pkg?.dependencies ?? {}),
-        ...(pkg?.devDependencies ?? {}),
-      }).includes('typescript');
+      const isTs = /^.+\.(ts|tsx)$/.test(ctx.file);
 
       generateCodeWithFile({
         funName,

@@ -1,15 +1,4 @@
 "use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -69,24 +58,22 @@ function vitePluginWatchI18(userOptions) {
     return {
         name: 'vite-plugin-watch-i18',
         handleHotUpdate: function (ctx) {
-            var _a, _b;
             return __awaiter(this, void 0, void 0, function () {
-                var fileCode, _c, funName, _d, splitCode, _e, languageDir, _f, include, filePath, allFile, pkg, isTs;
-                return __generator(this, function (_g) {
-                    switch (_g.label) {
+                var fileCode, _a, funName, _b, splitCode, _c, languageDir, _d, include, filePath, allFile, isTs;
+                return __generator(this, function (_e) {
+                    switch (_e.label) {
                         case 0: return [4 /*yield*/, ctx.read()];
                         case 1:
-                            fileCode = _g.sent();
-                            _c = userOptions.funName, funName = _c === void 0 ? 't' : _c, _d = userOptions.splitCode, splitCode = _d === void 0 ? '#' : _d, _e = userOptions.languageDir, languageDir = _e === void 0 ? ['locale/zh-CN', 'locale/en-US'] : _e, _f = userOptions.include, include = _f === void 0 ? ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'] : _f;
+                            fileCode = _e.sent();
+                            _a = userOptions.funName, funName = _a === void 0 ? 't' : _a, _b = userOptions.splitCode, splitCode = _b === void 0 ? '#' : _b, _c = userOptions.languageDir, languageDir = _c === void 0 ? ['locale/zh-CN', 'locale/en-US'] : _c, _d = userOptions.include, include = _d === void 0 ? ['src/**/*.{js,jsx,ts,tsx}', '!src/**/*.d.ts'] : _d;
                             filePath = ctx.file;
                             return [4 /*yield*/, fg(include)];
                         case 2:
-                            allFile = _g.sent();
+                            allFile = _e.sent();
                             if (!allFile.some(function (i) { return path.resolve(i) === filePath; })) {
                                 return [2 /*return*/];
                             }
-                            pkg = require(path.resolve('package.json'));
-                            isTs = Object.keys(__assign(__assign({}, ((_a = pkg === null || pkg === void 0 ? void 0 : pkg.dependencies) !== null && _a !== void 0 ? _a : {})), ((_b = pkg === null || pkg === void 0 ? void 0 : pkg.devDependencies) !== null && _b !== void 0 ? _b : {}))).includes('typescript');
+                            isTs = /^.+\.(ts|tsx)$/.test(ctx.file);
                             generateCodeWithFile({
                                 funName: funName,
                                 splitCode: splitCode,
