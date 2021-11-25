@@ -260,8 +260,7 @@ var addLocaleImport = function (_a) {
         ? path.resolve(path.join('src', localeDir), 'index.ts')
         : path.resolve(path.join('src', localeDir), 'index.js');
     if (!(0, fs_1.existsSync)(root)) {
-        console.error('The default export language pack file was not found!');
-        process.exit(1);
+        throw new Error('The default export language pack file was not found!');
     }
     var code = (0, fs_1.readFileSync)(root, 'utf-8');
     var ast = isTs

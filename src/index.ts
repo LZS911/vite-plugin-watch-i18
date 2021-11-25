@@ -250,8 +250,7 @@ const addLocaleImport = ({ localeDir, fileName, isTs }: any) => {
     : path.resolve(path.join('src', localeDir), 'index.js');
 
   if (!existsSync(root)) {
-    console.error('The default export language pack file was not found!');
-    process.exit(1);
+    throw new Error('The default export language pack file was not found!');
   }
 
   const code = readFileSync(root, 'utf-8');
