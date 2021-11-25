@@ -57,20 +57,24 @@ const generateCodeWithFile = ({
     langLength: languageDir.length,
   });
 
-  languageDir.forEach((v, index) => {
-    writeLocale({
-      localeDir: normalizePath(v),
-      localeFileNameArr,
-      isTs,
-      localeInfo: localeInfo.map((info) => ({
-        path: info[0].split('.'),
-        content: info[index + 1],
-      })),
+  try {
+    languageDir.forEach((v, index) => {
+      writeLocale({
+        localeDir: normalizePath(v),
+        localeFileNameArr,
+        isTs,
+        localeInfo: localeInfo.map((info) => ({
+          path: info[0].split('.'),
+          content: info[index + 1],
+        })),
+      });
     });
-  });
-  const formatCode = prettier.format(code, { parser: 'typescript' });
-  const formatOriginCode = prettier.format(fileCode, { parser: 'typescript' });
-  formatCode !== formatOriginCode && writeFile(filePath, code);
+    const formatCode = prettier.format(code, { parser: 'typescript' });
+    const formatOriginCode = prettier.format(fileCode, { parser: 'typescript' });
+    formatCode !== formatOriginCode && writeFile(filePath, code);
+  } catch (error) {
+    console.error(red(error));
+  }
 };
 
 const parseSourceFile = ({
@@ -206,10 +210,7 @@ const assemblyLocaleObj = (origin: any, localeInfo: any) => {
       }
 
       if (existProp?.value?.type === 'ObjectExpression') {
-        console.error(
-          red('ERROR: There are duplicates in the language pack, please check the data!'),
-        );
-        return originAst;
+        throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
       }
       const item = t.objectProperty(t.identifier(objPath[0]), t.stringLiteral(content));
       return [...originAst, item];
@@ -218,10 +219,7 @@ const assemblyLocaleObj = (origin: any, localeInfo: any) => {
     if (originAst.some((o: any) => o.key.name === objPath[0])) {
       const existProp: any = originAst.find((o: any) => o.key.name === objPath[0]);
       if (existProp?.value?.type !== 'ObjectExpression') {
-        console.error(
-          red('ERROR: There are duplicates in the language pack, please check the data!'),
-        );
-        return originAst;
+        throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
       }
       const item = addProp(objPath.slice(1), content, existProp.value.properties);
       const tmp = originAst.slice();

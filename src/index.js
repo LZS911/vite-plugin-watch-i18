@@ -99,20 +99,25 @@ var generateCodeWithFile = function (_a) {
         splitCode: splitCode,
         langLength: languageDir.length
     }), code = _b.code, localeInfo = _b.localeInfo, localeFileNameArr = _b.localeFileNameArr;
-    languageDir.forEach(function (v, index) {
-        writeLocale({
-            localeDir: (0, vite_1.normalizePath)(v),
-            localeFileNameArr: localeFileNameArr,
-            isTs: isTs,
-            localeInfo: localeInfo.map(function (info) { return ({
-                path: info[0].split('.'),
-                content: info[index + 1]
-            }); })
+    try {
+        languageDir.forEach(function (v, index) {
+            writeLocale({
+                localeDir: (0, vite_1.normalizePath)(v),
+                localeFileNameArr: localeFileNameArr,
+                isTs: isTs,
+                localeInfo: localeInfo.map(function (info) { return ({
+                    path: info[0].split('.'),
+                    content: info[index + 1]
+                }); })
+            });
         });
-    });
-    var formatCode = prettier.format(code, { parser: 'typescript' });
-    var formatOriginCode = prettier.format(fileCode, { parser: 'typescript' });
-    formatCode !== formatOriginCode && writeFile(filePath, code);
+        var formatCode = prettier.format(code, { parser: 'typescript' });
+        var formatOriginCode = prettier.format(fileCode, { parser: 'typescript' });
+        formatCode !== formatOriginCode && writeFile(filePath, code);
+    }
+    catch (error) {
+        console.error((0, chalk_1.red)(error));
+    }
 };
 var parseSourceFile = function (_a) {
     var _b, _c;
@@ -218,8 +223,7 @@ var assemblyLocaleObj = function (origin, localeInfo) {
                 return originAst;
             }
             if (((_b = existProp === null || existProp === void 0 ? void 0 : existProp.value) === null || _b === void 0 ? void 0 : _b.type) === 'ObjectExpression') {
-                console.error((0, chalk_1.red)('ERROR: There are duplicates in the language pack, please check the data!'));
-                return originAst;
+                throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
             }
             var item = core_1.types.objectProperty(core_1.types.identifier(objPath[0]), core_1.types.stringLiteral(content));
             return __spreadArray(__spreadArray([], originAst, true), [item], false);
@@ -227,8 +231,7 @@ var assemblyLocaleObj = function (origin, localeInfo) {
         if (originAst.some(function (o) { return o.key.name === objPath[0]; })) {
             var existProp = originAst.find(function (o) { return o.key.name === objPath[0]; });
             if (((_c = existProp === null || existProp === void 0 ? void 0 : existProp.value) === null || _c === void 0 ? void 0 : _c.type) !== 'ObjectExpression') {
-                console.error((0, chalk_1.red)('ERROR: There are duplicates in the language pack, please check the data!'));
-                return originAst;
+                throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
             }
             var item_1 = addProp(objPath.slice(1), content, existProp.value.properties);
             var tmp = originAst.slice();
