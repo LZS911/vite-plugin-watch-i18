@@ -65,7 +65,7 @@ const generateCodeWithFile = ({
         isTs,
         localeInfo: localeInfo.map((info) => ({
           path: info[0].split('.'),
-          content: info[index + 1],
+          value: info[index + 1],
         })),
       });
     });
@@ -73,7 +73,7 @@ const generateCodeWithFile = ({
     const formatOriginCode = prettier.format(fileCode, { parser: 'typescript' });
     formatCode !== formatOriginCode && writeFile(filePath, code);
   } catch (error) {
-    console.error(red(error));
+    console.trace(red(error));
   }
 };
 
@@ -143,7 +143,7 @@ const writeLocale = ({
   localeDir: string;
   localeFileNameArr: string[];
   isTs: boolean;
-  localeInfo: Array<{ path: string[]; content: string }>;
+  localeInfo: Array<{ path: string[]; value: string }>;
 }) => {
   groupBy(localeFileNameArr).forEach((fileName) => {
     let localPath = path.resolve(path.join('src', localeDir), fileName);
@@ -172,8 +172,8 @@ const writeLocale = ({
         const properties = assemblyLocaleObj(
           (node.declaration as any).properties,
           localeInfo
-            .filter((f: any) => f.path[0] === fileName)
-            .map((m: any) => ({ path: m.path.slice(1), content: m.content })),
+            .filter((f) => f.path[0] === fileName)
+            .map((m) => ({ path: m.path.slice(1), value: m.value })),
         );
         _path.replaceWith(t.exportDefaultDeclaration(t.objectExpression(properties)));
         _path.skip();
@@ -196,14 +196,14 @@ const writeLocale = ({
   });
 };
 
-const assemblyLocaleObj = (origin: any, localeInfo: any) => {
-  const addProp = (objPath: any, content: any, originAst = []) => {
+const assemblyLocaleObj = (origin: any, localeInfo: Array<{ path: string[]; value: string }>) => {
+  const addProp = (objPath: string[], value: string, originAst = []) => {
     if (objPath.length === 1) {
       const existProp: any = originAst.find((o: any) => o.key.name === objPath[0]);
       if (existProp?.value?.type === 'StringLiteral') {
         originAst.forEach((o: any) => {
           if (o.key.name === objPath[0]) {
-            o.value.value = content;
+            o.value.value = value;
           }
         });
         return originAst;
@@ -212,7 +212,7 @@ const assemblyLocaleObj = (origin: any, localeInfo: any) => {
       if (existProp?.value?.type === 'ObjectExpression') {
         throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
       }
-      const item = t.objectProperty(t.identifier(objPath[0]), t.stringLiteral(content));
+      const item = t.objectProperty(t.identifier(objPath[0]), t.stringLiteral(value));
       return [...originAst, item];
     }
 
@@ -221,7 +221,7 @@ const assemblyLocaleObj = (origin: any, localeInfo: any) => {
       if (existProp?.value?.type !== 'ObjectExpression') {
         throw new Error('ERROR: There are duplicates in the language pack, please check the data!');
       }
-      const item = addProp(objPath.slice(1), content, existProp.value.properties);
+      const item = addProp(objPath.slice(1), value, existProp.value.properties);
       const tmp = originAst.slice();
       tmp.forEach((o: any) => {
         if (o.key.name === objPath[0]) {
@@ -229,57 +229,60 @@ const assemblyLocaleObj = (origin: any, localeInfo: any) => {
         }
       });
       return tmp;
-    } else {
-      const ast = t.objectProperty(
-        t.identifier(objPath[0]),
-        t.objectExpression(addProp(objPath.slice(1), content)),
-      );
-      return [...originAst, ast];
     }
+    const ast = t.objectProperty(
+      t.identifier(objPath[0]),
+      t.objectExpression(addProp(objPath.slice(1), value)),
+    );
+    return [...originAst, ast];
   };
   let properties = Array.isArray(origin) ? origin.slice() : origin;
-  localeInfo.forEach((info: any) => {
-    properties = addProp(info.path, info.content, properties);
+  localeInfo.forEach((info) => {
+    properties = addProp(info.path, info.value, properties);
   });
   return properties;
 };
 
 const addLocaleImport = ({ localeDir, fileName, isTs }: any) => {
-  const root = isTs
-    ? path.resolve(path.join('src', localeDir), 'index.ts')
-    : path.resolve(path.join('src', localeDir), 'index.js');
+  try {
+    const root = isTs
+      ? path.resolve(path.join('src', localeDir), 'index.ts')
+      : path.resolve(path.join('src', localeDir), 'index.js');
 
-  if (!existsSync(root)) {
-    throw new Error('The default export language pack file was not found!');
+    if (!existsSync(root)) {
+      throw new Error('The default export language pack file was not found!');
+    }
+
+    const code = readFileSync(root, 'utf-8') || `export default {translation:{}}`;
+    const ast = isTs
+      ? parseSync(code, {
+          presets: [require('@babel/preset-typescript').default],
+          filename: root,
+        })
+      : parseSync(code, {});
+    traverse(ast, {
+      Program(_path) {
+        _path.unshiftContainer(
+          'body',
+          t.importDeclaration(
+            [t.importDefaultSpecifier(t.identifier(fileName))],
+            t.stringLiteral(`./${fileName}`),
+          ),
+        );
+      },
+      ExportDefaultDeclaration(_path) {
+        const properties = (_path.node.declaration as any).properties.slice();
+        properties[0].value.properties.push(
+          t.objectProperty(t.identifier(fileName), t.identifier(fileName)),
+        );
+        _path.replaceWith(t.exportDefaultDeclaration(t.objectExpression(properties)));
+        _path.skip();
+      },
+    });
+    writeFile(root, !!ast ? generator(ast, { jsescOption: { minimal: true } })?.code ?? '' : '');
+  } catch (error) {
+    console.trace(red(error));
   }
-
-  const code = readFileSync(root, 'utf-8');
-  const ast = isTs
-    ? parseSync(code, {
-        presets: [require('@babel/preset-typescript').default],
-        filename: root,
-      })
-    : parseSync(code, {});
-  traverse(ast, {
-    Program(_path) {
-      _path.unshiftContainer(
-        'body',
-        t.importDeclaration(
-          [t.importDefaultSpecifier(t.identifier(fileName))],
-          t.stringLiteral(`./${fileName}`),
-        ),
-      );
-    },
-    ExportDefaultDeclaration(_path) {
-      const properties = (_path.node.declaration as any).properties.slice();
-      properties[0].value.properties.push(
-        t.objectProperty(t.identifier(fileName), t.identifier(fileName)),
-      );
-      _path.replaceWith(t.exportDefaultDeclaration(t.objectExpression(properties)));
-      _path.skip();
-    },
-  });
-  writeFile(root, !!ast ? generator(ast, { jsescOption: { minimal: true } })?.code ?? '' : '');
 };
 
 const groupBy = (arr: string[]) => {
@@ -288,9 +291,9 @@ const groupBy = (arr: string[]) => {
   }, []);
 };
 
-const writeFile = (pathFile: string, content: string) => {
+const writeFile = (pathFile: string, code: string) => {
   try {
-    const file = prettier.format(content, {
+    const file = prettier.format(code, {
       parser: 'typescript',
       tabWidth: 2,
       semi: true,
