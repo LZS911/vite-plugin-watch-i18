@@ -1,20 +1,15 @@
 {
   "compilerOptions": {
-    "module": "ESNext",
-    "target": "es2017",
-    "lib": ["ESNext", "DOM"],
-    "esModuleInterop": true,
+    "target": "esnext",
+    "moduleResolution": "node",
     "strict": true,
-    "strictNullChecks": true,
-    "moduleResolution": "Node",
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "jsx": "react-jsx",
-    "outDir": "./dist",                  
+    "declaration": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "outDir": "dist",
+    "module": "commonjs",
+    "lib": ["ESNext"],
+    "sourceMap": true
   },
-  "exclude": [
-    "**/dist",
-    "**/node_modules",
-    "**/test"
-  ]
+  "include": ["./src"]
 }

@@ -23,6 +23,31 @@ export default defineConfig({
 | languageDir | ['locale/zh-CN', 'locale/en-US'] | string[] | language package path |
 | include | ['src/\*\*/\*.{js,jsx,ts,tsx}', '!src/\*\*/\*.d.ts'] | string[] | include directory |
 
+# Warn
+
+**Currently only supports locale file format**:
+
+```javascript
+export default {
+  index: {
+    confirm: '确认',
+  },
+};
+```
+
+**Not supports**:
+
+```javascript
+const Locale = {
+  index: {
+    confirm: '确认',
+  },
+};
+export default Locale;
+```
+
+**The default export file of the language pack is index.ts or index.js**
+
 # Example
 
 ## Add

@@ -5,7 +5,7 @@ import { readFileSync, writeFileSync, existsSync } from 'fs';
 import * as prettier from 'prettier';
 import { traverse, parseSync, types as t } from '@babel/core';
 import generator from '@babel/generator';
-import * as fg from 'fast-glob';
+import fg from 'fast-glob';
 import { red } from 'chalk';
 
 function vitePluginWatchI18(userOptions: Options = {}): Plugin {
