@@ -25,7 +25,7 @@ function vitePluginWatchI18(userOptions: Options = {}): Plugin {
       if (!allFile.some((i) => path.resolve(i) === filePath)) {
         return;
       }
-
+      console.log(fileCode);
       const isTs = /^.+\.(ts|tsx)$/.test(ctx.file);
 
       generateCodeWithFile({
