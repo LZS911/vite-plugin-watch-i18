@@ -13,7 +13,6 @@ function vitePluginWatchI18(userOptions: Options = {}): Plugin {
     name: 'vite-plugin-watch-i18',
     async handleHotUpdate(ctx) {
       const fileCode = await ctx.read();
-      console.log(fileCode, 'fileCode=============');
       const {
         funName = 't',
         splitCode = '#',
@@ -26,7 +25,6 @@ function vitePluginWatchI18(userOptions: Options = {}): Plugin {
       if (!allFile.some((i) => path.resolve(i) === filePath)) {
         return;
       }
-      console.log(fileCode);
       const isTs = /^.+\.(ts|tsx)$/.test(ctx.file);
 
       generateCodeWithFile({
