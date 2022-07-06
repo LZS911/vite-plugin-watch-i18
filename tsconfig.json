@@ -9,8 +9,8 @@
     "outDir": "dist",
     "module": "commonjs",
     "lib": ["ESNext"],
-    "sourceMap": true
+    "sourceMap": true,
+    "skipLibCheck": true
   },
-  "include": ["./src/index.ts"],
-  "exclude": ["./node_modules", "src/index.type.ts"]
+  "include": ["./src"]
 }
