@@ -1,6 +1,6 @@
 import { Plugin, normalizePath } from 'vite';
 import * as path from 'path';
-import { IGenerateCodeProps, Options } from './index.d';
+import { IGenerateCodeProps, Options } from './index.type';
 import { readFileSync, writeFileSync, existsSync } from 'fs';
 import * as prettier from 'prettier';
 import { traverse, parseSync, types as t } from '@babel/core';
