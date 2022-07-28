@@ -47,7 +47,7 @@ const generateCodeWithFile = ({
   splitCode,
   languageDir,
 }: IGenerateCodeProps) => {
-  const { code, localeInfo, localeFileNameArr } = parseSourceFile({
+  const { code, localeInfo, localeFileNameArr, isHaveI18nFun } = parseSourceFile({
     filePath,
     fileCode,
     funName,
@@ -55,6 +55,10 @@ const generateCodeWithFile = ({
     splitCode,
     langLength: languageDir.length,
   });
+
+  if (!isHaveI18nFun) {
+    return;
+  }
 
   try {
     languageDir.forEach((v, index) => {
@@ -91,6 +95,7 @@ const parseSourceFile = ({
   splitCode: string;
   langLength: number;
 }) => {
+  let isHaveI18nFun = false;
   const ast = isTs
     ? parseSync(fileCode, {
         presets: [require('@babel/preset-typescript').default],
@@ -115,6 +120,7 @@ const parseSourceFile = ({
         if (!arg.includes(splitCode) || arg.split(splitCode).length !== langLength + 1) {
           return;
         }
+        isHaveI18nFun = isFun;
         localeInfo.push(arg.split(splitCode));
         localeFileNameArr.push(arg.split('.')[0]);
         const replaceArgs = node.arguments.slice() as any;
@@ -130,6 +136,7 @@ const parseSourceFile = ({
     code: !!ast ? generator(ast, { jsescOption: { minimal: true } })?.code ?? '' : '',
     localeInfo,
     localeFileNameArr,
+    isHaveI18nFun,
   };
 };
 
