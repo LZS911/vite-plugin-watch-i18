@@ -1,12 +1,12 @@
 {
   "name": "vite-plugin-watch-i18",
-  "version": "1.2.7",
+  "version": "1.2.8",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.type.d.ts",
   "scripts": {
     "build": "tsc",
-    "prepublishOnly": "npm run build"
+    "prepublishOnly": "npm run build && cp ./src/prettier.config.js ./dist"
   },
   "devDependencies": {
     "@types/babel__core": "^7.1.16",
