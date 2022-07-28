@@ -304,7 +304,7 @@ const writeFile = (pathFile: string, code: string) => {
       tabWidth: 2,
       semi: true,
       printWidth: 80,
-      trailingComma: 'es5',
+      trailingComma: 'all',
       arrowParens: 'always',
       proseWrap: 'preserve',
       useTabs: false,
