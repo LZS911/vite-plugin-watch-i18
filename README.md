@@ -14,6 +14,39 @@ export default defineConfig({
 }
 ```
 
+# Prettier Config
+
+The prettier configuration when the plugin saves the file:
+
+```javascript
+module.exports = {
+  tabWidth: 2,
+  semi: true,
+  printWidth: 80,
+  trailingComma: 'es5',
+  arrowParens: 'always',
+  proseWrap: 'preserve',
+  useTabs: false,
+  singleQuote: true,
+  bracketSpacing: true,
+  jsxBracketSameLine: false,
+};
+
+```
+
+Project synchronization Prettier Config:
+
+Create prettier.config.js
+
+```javascript
+const viteWatchI18nPrettierConfig = require('vite-plugin-watch-i18/dist/prettier.config');
+module.exports = {
+  plugins: [],
+  ...viteWatchI18nPrettierConfig,
+};
+
+```
+
 # Options
 
 | name | defaultValue | type | description |
