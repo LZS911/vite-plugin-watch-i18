@@ -1,9 +1,19 @@
 {
   "name": "vite-plugin-watch-i18",
-  "version": "1.2.9",
+  "version": "1.3.0",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.type.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LZS911/vite-plugin-watch-i18"
+  },
+  "keywords": [
+    "vite",
+    "react-i18next",
+    "react",
+    "i18next"
+  ],
   "scripts": {
     "build": "tsc",
     "prepublishOnly": "npm run build && cp ./src/prettier.config.js ./dist"
