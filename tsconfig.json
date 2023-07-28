@@ -7,9 +7,9 @@
     "noUnusedLocals": true,
     "esModuleInterop": true,
     "outDir": "dist",
-    "module": "commonjs",
+    "module": "ES2015",
     "lib": ["ESNext"],
-    "sourceMap": true,
+    "sourceMap": false,
     "skipLibCheck": true
   },
   "include": ["./src"]
