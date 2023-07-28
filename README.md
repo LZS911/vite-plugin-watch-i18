@@ -85,16 +85,16 @@ export default Locale;
 
 ## Add
 
-![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/main/assets/images/vite-plugin/watch-i18/example/add.gif)
+![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/backend-main/assets/images/vite-plugin/watch-i18/example/add.gif)
 
 ## Modify
 
-![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/main/assets/images/vite-plugin/watch-i18/example/modify.gif)
+![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/backend-main/assets/images/vite-plugin/watch-i18/example/modify.gif)
 
 ## New Locale
 
-![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/main/assets/images/vite-plugin/watch-i18/example/new.gif)
+![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/backend-main/assets/images/vite-plugin/watch-i18/example/new.gif)
 
 ## Param
 
-![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/main/assets/images/vite-plugin/watch-i18/example/param.gif)
+![example](https://raw.githubusercontent.com/LZS911/LZS911.github.io/backend-main/assets/images/vite-plugin/watch-i18/example/param.gif)
